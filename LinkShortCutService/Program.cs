@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using LinkShortCutService.Data.Context;
 using Microsoft.EntityFrameworkCore;
 
@@ -7,7 +8,11 @@ var services = builder.Services;
 
 services
    .AddControllersWithViews()
-   .AddJsonOptions(opt => opt.JsonSerializerOptions.WriteIndented = true);
+   .AddJsonOptions(opt =>
+    {
+        opt.JsonSerializerOptions.WriteIndented          = true;
+        opt.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingDefault;
+    });
 
 services
    .AddEndpointsApiExplorer()
