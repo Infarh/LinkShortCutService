@@ -17,6 +17,12 @@ services.AddDbContext<ContextDB>(opt => opt.UseSqlite(builder.Configuration.GetC
 
 var app = builder.Build();
 
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<ContextDB>();
+    await db.Database.MigrateAsync();
+}
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
