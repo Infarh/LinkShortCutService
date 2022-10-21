@@ -7,9 +7,9 @@ namespace LinkShortCutService.Data.Entities;
 [Index(nameof(Url), IsUnique = true)]
 public class Link : Entity
 {
-    public string Url { get; set; }
+    public string Url { get; set; } = null!;
 
-    public string Hash { get; set; }
+    public string Hash { get; set; } = null!;
 
     public string? Name { get; set; }
 
