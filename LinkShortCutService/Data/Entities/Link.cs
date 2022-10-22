@@ -1,4 +1,6 @@
-﻿using LinkShortCutService.Data.Entities.Base;
+﻿using System.ComponentModel.DataAnnotations;
+
+using LinkShortCutService.Data.Entities.Base;
 using Microsoft.EntityFrameworkCore;
 
 namespace LinkShortCutService.Data.Entities;
@@ -15,9 +17,16 @@ public class Link : Entity
 
     public string? Description { get; set; }
 
+    [ConcurrencyCheck]
     public DateTimeOffset LastAccess { get; set; } = DateTimeOffset.Now;
 
+    [ConcurrencyCheck]
     public int AccessCount { get; set; }
+
+    [Timestamp]
+    public byte[] RowVersion { get; set; } = null!;
+
+    public string? UserId { get; set; }
 
     public override string ToString() => $"{Name}[{Hash}] - {Url} {Description}";
 
