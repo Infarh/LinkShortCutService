@@ -28,7 +28,7 @@ public class LinkApiController : ControllerBase
     [HttpGet("hash/{Hash}")]
     [ProducesResponseType(typeof(UrlHashModel), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> HashInfo([StringLength(maximumLength: 255, MinimumLength = 5)] string Hash, CancellationToken Cancel)
+    public async Task<IActionResult> HashInfo([MinLength(5)] string Hash, CancellationToken Cancel)
     {
         if (await _Manager.FindByHashAsync(Hash, Cancel) is { } info)
             return Ok(info);
@@ -39,7 +39,7 @@ public class LinkApiController : ControllerBase
     [HttpGet("url/{Url}")]
     [ProducesResponseType(typeof(UrlHashModel), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> UrlInfo(string Url, CancellationToken Cancel)
+    public async Task<IActionResult> UrlInfo([MinLength(3)] string Url, CancellationToken Cancel)
     {
         if (await _Manager.FindByUrlAsync(Url, Cancel) is { } info)
             return Ok(info);
@@ -74,7 +74,7 @@ public class LinkApiController : ControllerBase
     [ProducesResponseType(typeof(UrlHashModel), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> DeleteHash([StringLength(250, MinimumLength = 5)] string Hash, CancellationToken Cancel)
+    public async Task<IActionResult> DeleteHash([MinLength(5)] string Hash, CancellationToken Cancel)
     {
         try
         {
@@ -96,7 +96,7 @@ public class LinkApiController : ControllerBase
     [ProducesResponseType(typeof(UrlHashModel), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> DeleteUrl(string Url, CancellationToken Cancel)
+    public async Task<IActionResult> DeleteUrl([MinLength(3)] string Url, CancellationToken Cancel)
     {
         try
         {

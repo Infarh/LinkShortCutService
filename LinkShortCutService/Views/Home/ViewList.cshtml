@@ -1,0 +1,38 @@
+﻿@model IAsyncEnumerable<UrlHashModel>
+
+@{
+    ViewBag.Title = "Ссылки";
+}
+
+<h2>Ссылки</h2>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th>#</th>
+        <th>url</th>
+        <th>Hash</th>
+        <th>Имя</th>
+        <th>Описание</th>
+    </tr>
+    </thead>
+    <tbody>
+    @{
+        var i = 0;
+        await foreach (var item in Model)
+        {
+            <tr>
+                <td>@(++i)</td>
+                <td>@item.Url</td>
+                <td>
+                    <a asp-action="RedirectTo" asp-route-Hash="@(item.Hash[..5])">
+                        @Url.ActionLink("RedirectTo", "Home", new { Hash = item.Hash[..5] })
+                    </a>
+                </td>
+                <td>@item.Name</td>
+                <td>@item.Description</td>
+            </tr>
+        }
+    }
+    </tbody>
+</table>

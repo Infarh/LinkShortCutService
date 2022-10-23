@@ -40,13 +40,13 @@ public class DbLinkManager : ILinkManager
         ) = Options.Value;
     }
 
-    public async Task<int> GetCountAsync(CancellationToken Cancel = default)
+    public async ValueTask<int> GetCountAsync(CancellationToken Cancel = default)
     {
         var count = await _db.Links.CountAsync(Cancel).ConfigureAwait(false);
         return count;
     }
 
-    public async Task<string> AddAsync(string Url, string? Name, string? Description, CancellationToken Cancel = default)
+    public async ValueTask<string> AddAsync(string Url, string? Name, string? Description, CancellationToken Cancel = default)
     {
         if (!__RegexUrlSchemePrefix.IsMatch(Url))
             Url = "http://" + Url;
@@ -79,7 +79,7 @@ public class DbLinkManager : ILinkManager
         return hash[..Math.Min(hash.Length, _HashLength)];
     }
 
-    public async Task<UrlHashModel?> FindByHashAsync(string Hash, CancellationToken Cancel = default)
+    public async ValueTask<UrlHashModel?> FindByHashAsync(string Hash, CancellationToken Cancel = default)
     {
         if (await _db.Links.FirstOrDefaultAsync(l => l.Hash.StartsWith(Hash), Cancel).ConfigureAwait(false) is
         {
@@ -93,7 +93,7 @@ public class DbLinkManager : ILinkManager
         return null;
     }
 
-    public async Task<UrlHashModel?> FindByUrlAsync(string Url, CancellationToken Cancel = default)
+    public async ValueTask<UrlHashModel?> FindByUrlAsync(string Url, CancellationToken Cancel = default)
     {
         if (!__RegexUrlSchemePrefix.IsMatch(Url))
             Url = "http://" + Url;
@@ -127,7 +127,7 @@ public class DbLinkManager : ILinkManager
             yield return new(url, hash, name, description);
     }
 
-    public async Task<UrlHashModel?> DeleteByHashAsync(string Hash, CancellationToken Cancel = default)
+    public async ValueTask<UrlHashModel?> DeleteByHashAsync(string Hash, CancellationToken Cancel = default)
     {
         switch (await _db.Links.Where(l => l.Hash.StartsWith(Hash)).ToArrayAsync(Cancel))
         {
@@ -145,7 +145,7 @@ public class DbLinkManager : ILinkManager
         }
     }
 
-    public async Task<UrlHashModel?> DeleteByUrlAsync(string Url, CancellationToken Cancel = default)
+    public async ValueTask<UrlHashModel?> DeleteByUrlAsync(string Url, CancellationToken Cancel = default)
     {
         Url = Regex.IsMatch(Url, "^[A-z]+://")
             ? Url
@@ -167,7 +167,7 @@ public class DbLinkManager : ILinkManager
         }
     }
 
-    public async Task<UrlHashModel?> GetAsync(string Hash, CancellationToken Cancel = default)
+    public async ValueTask<UrlHashModel?> GetAsync(string Hash, CancellationToken Cancel = default)
     {
         var query = _db.Links.Where(l => l.Hash.StartsWith(Hash));
 
